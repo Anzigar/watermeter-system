@@ -1,0 +1,103 @@
+{% include 'include/header.html'%}
+  <!-- Navbar -->
+{% include 'include/nav.html'%}
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{url_for('static', filename='../../index3.html')}}" class="brand-link">
+      <img src="{{url_for('static', filename='../../dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Water Meter System</span>
+    </a>
+
+    <!-- Sidebar -->
+    {% include 'include/sidebar.html'%}
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Simple Tables</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{{url_for('index')}}">Home</a></li>
+              <li class="breadcrumb-item active">Simple Tables</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+ 
+     
+
+        <!-- /.row -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Expandable Table</h3>
+              </div>
+              <!-- ./card-header -->
+              <div class="card-body">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>User</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th>Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr data-widget="expandable-table" aria-expanded="false">
+                      {% for i in i %}
+                      <td>{{ i }}</td>
+                      <td>{{ name }}</td>
+                      <td>11-7-2014</td>
+                      <td>Approved</td>
+                      <td></td>
+                      {% endfor %}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  {% include 'include/footer.html'%}
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+{% include 'include/script.html' %}
+</body>
+</html>

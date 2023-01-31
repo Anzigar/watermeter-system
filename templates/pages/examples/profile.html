@@ -1,0 +1,101 @@
+{% include 'include/header.html'%}
+  <!-- Navbar -->
+  {% include 'include/nav.html'%}
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{{ url_for('static', filename='../../index3.html')}}" class="br and-link">
+           <span class="brand-text font-weight-light">Water Meter System</span>
+    </a>
+
+    <!-- Sidebar -->
+{% include 'include/sidebar.html'%}
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Profile</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="{{url_for('index')}}">Home</a></li>
+              <li class="breadcrumb-item active">User Profile</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+
+            <!-- Profile Image -->
+            <div class="card card-primary card-outline ">
+              <div class="card-body box-profile">
+                <div class="text-center">
+                  <img class="profile-user-img img-fluid img-circle"
+                       src="{{url_for('static', filename='../../dist/img/user4-128x128.jpg')}}"
+                       alt="User profile picture">
+                </div>
+                  {% for user in user %}
+                <h3 class="profile-username text-center">{{ name }}</h3>
+                {% endfor %}
+                <p class="text-muted text-center">Software Engineer</p>
+
+                <ul class="list-group list-group-unbordered mb-3">
+                  <li class="list-group-item">
+                    <b>Location</b> <a class="float-right">{{ location }}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Meter Id</b> <a class="float-right">{{ meter_id }}</a>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Units</b> <a class="float-right">{{ reading }}</a>
+                  </li>
+                </ul>
+
+                <a href="{{url_for('logout')}}" class="btn btn-primary btn-block"><b>Logout</b></a>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- About Me Box -->
+
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+          
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% include 'include/footer.html'%}
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+{%  include 'include/script.html'%}
+</body>
+</html>
