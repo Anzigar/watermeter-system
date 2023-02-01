@@ -5,9 +5,9 @@
         <img src="{{url_for('static' ,filename='dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        {% for user in user %}
-        <a href="#" class="d-block">{{ user.name }}</a>
-        {% endfor %}
+
+        <a href="#" class="d-block"></a>
+
       </div>
     </div>
 
@@ -48,7 +48,6 @@
           </a>
 
         </li>
-
           <li class="nav-item">
             <a href="{{url_for('meterreading')}}" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
@@ -59,8 +58,6 @@
             </a>
           </li>
         
-
-       
         <li class="nav-item">
           <a href="{{url_for('profile')}}" class="nav-link">
             <i class="nav-icon fas fa-table"></i>

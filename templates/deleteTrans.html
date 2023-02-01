@@ -1,0 +1,34 @@
+{% include 'include/header.html'%}
+  <!-- Navbar -->
+{% include 'include/nav.html'%}
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+      <span class="brand-text font-weight-light">Water Meter System</span>
+    </a>
+
+    <!-- Sidebar -->
+    {% include 'include/sidebar.html'%}
+
+    <form action='' method="post">
+        Click YES to confirm
+        <input type = "submit" value="YES">
+        <a href='/data'>Cancel</a>
+    </form>
+    
+    {% include "include/footer.html"%}
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+{% include 'include/script.html' %}
+</body>
+</html>

@@ -55,24 +55,22 @@
                       <th>Location</th>
                       <th>View</th>
                       <th>Edit</th>
-                      <th>Change Password</th>
                       <th>Delete</th>
                     </tr>
                   </thead>
                   <tbody>
+                  
                     <tr data-widget="expandable-table" aria-expanded="false">
-                      {% for user in users %}
                       <td>{{ user.name }}</td>
                       <td>{{ user.email }}</td>
                       <td>{{ user.role }}</td>
-                      <td>{{ user.amount }}</td>
-                      <td>{{ user.location }}</td>
-                      <td><a href="#" class=" btn btn-success">View</a></td>
-                      <td><a href="#" class="btn btn-primary">Edit</a></td>
-                      <td><a href="#" class="btn btn-warning">Change Password</a></td>
-                      <td><a href="#" class="btn btn-danger">Delete</a></td>
-                      {% endfor %}
-                    </tr>    
+                      <td>{{ user.balance }}</td>
+                      <td>Upanga</td>
+                      <td><a href="{{url_for('userslist')}}" class=" btn btn-success">View</a></td>
+                      <td><a href="{{url_for('update', id=user.id)}}" class="btn btn-primary">Edit</a></td>
+                      <td><a href="{{url_for('delete', id=user.id)}}" class="btn btn-danger">Delete</a></td>
+                      
+                    </tr>  
                   </tbody>
                 </table>
               </div>

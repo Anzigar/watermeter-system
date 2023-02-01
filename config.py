@@ -1,4 +1,9 @@
-from flask import Flask, session
+import crypt
+import string
+from faker import Faker
+import random
+import bcrypt
+from flask import Flask, session, abort
 from flask_login import login_required, LoginManager
 from flask_login import logout_user
 from datetime import timedelta
@@ -24,7 +29,6 @@ login_manager.login_view = 'login'
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 migrate = Migrate(app, db)
-
 
 # database
 class Role(db.Model):
@@ -186,6 +190,7 @@ def history():
      return render_template('pages/tables/simple.html')
 
 #Transaction
+#add transaction
 @app.route('/transaction')
 def transaction():
      return render_template('pages/tables/transaction.html')
@@ -198,7 +203,7 @@ def profile():
 #meter reading
 @app.route('/meterreading')
 def meterreading():
-     return render_template('pages/tables/meter_reading.html')
+     return render_template('meter_reading.html')
 
 #Roles routes
 @app.route('/roles')
@@ -216,8 +221,9 @@ def sucess(name):
     return 'Welcome %s' % name
 
 @app.route('/users')
-def users():
+def users_list():
     return render_template('users.html')
+
 
 # User account management
 @app.route("/register", methods=["GET", "POST"])
@@ -260,22 +266,75 @@ def login():
                 message = "Only admin can login"
     return render_template("login.html", message=message, error=error)
 
-#password change 
-@app.route('/change-password', methods = ['GET','POST'])
-def change_password():
-    message = ""
-    if 'loggedin' in session:
-        changePassUserId = request.args.get('userid')
-        if request.method == 'POST' and 'password' in request.form:
-            pass
-#view user
-@app.route('/view', methods = ['GET', 'POST'])
-def view():
-    pass
+#CRUD for user
+#create the user
+@app.route('/data/create', methods=['GET', 'POST'])
+def create():
+    if request.method == 'GET':
+        return render_template('createuser.html')
+    
+    if request.method == 'POST':
+        name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        balance = request.form.get("balance")
+        user = User(name=name, email=email, password=password, balance=balance)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for("users", id=user.id))
+#view all
+@app.route('/userslist')
+def userslist():
+    users = User.query.all()
+    return render_template('userlist.html', users=users)
+
+#retrieve user
+@app.route('/users/<int:id>')
+def users(id):
+    user = User.query.filter_by(id=id).first()
+    if user:
+        return render_template('users.html', user=user )
+    return f"User withe the id = {id} Does not Exist"
+
+#update user
+@app.route('/users/<int:id>/update', methods = ['POST', 'GET'])
+def update(id):
+     user = User.query.filter_by(id=id).first()
+     if request.method == "POST":
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            name = request.form.get("name")
+            email = request.form.get("email")
+            password = request.form.get("password")
+            balance = request.form.get("balance")
+            user = User(name=name, email=email, password=password, balance=balance)
+            db.session.add(user)
+            db.session.commit()
+            return redirect(f'/users/{id}')
+        return f"User withe the id = {id} Does not Exist"
+     return render_template('update.html', user=user)
+
+#delete user
+@app.route('/users/<int:id>/delete', methods=['POST', 'GET'])
+def delete(id):
+    user = User.query.filter_by(id=id).first()
+    if request.method == "POST":
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return redirect('/users')
+        abort(404)
+    return render_template('delete.html')
+
+
 
 #add the meter 
 app.route("/add-meter", methods=["GET", "POST"])
 def add_meter():
+    if request.method == 'GET':
+        return render_template('add_meter.html')
+
     if request.method == "POST":
         meter_id = request.form.get("meter_id")
         location = request.form.get("location")
@@ -284,12 +343,29 @@ def add_meter():
         db.session.add(meter)
         db.session.commit()
         return redirect(url_for("index"))
-    return render_template("add_meter.html")
+
+
 
 @app.route("/view-meters")
 def view_meters():
      meters = Meter.query.all()
-     return render_template("view_meters.html", meters=meters)
+     return render_template("meter_reading.html", meters=meters)
+
+
+@app.route("/update-reading/<int:id>", methods=["GET", "POST"])
+def update_reading(id):
+    reading=Reading.query.filter_by(id=id).first()
+    if request.method == "POST":
+        meter_id = request.form.get("meter_id")
+        reading = request.form.get("reading")
+        reading = Reading(meter_id=meter_id, reading=reading, timestamp=datetime.now())
+        db.session.add(reading)
+        db.session.commit()
+        # calculate usage and bill the user here
+        return redirect(url_for("index"))
+    return render_template("editreading.html")
+
+#update 
 
 @app.route("/add-reading", methods=["GET", "POST"])
 def add_reading():
@@ -307,7 +383,7 @@ def add_reading():
 def add_funds():
     if request.method == "POST":
         user_id = request.form.get("user_id")
-        amount = request.form.get("amount")
+        amount = int(request.form.get("amount"))
         user = User.query.filter_by(id=user_id).first()
         user.balance += amount
         transaction = Transaction(user_id=user_id, transaction_timestamp=datetime.now(),
@@ -315,7 +391,7 @@ def add_funds():
         db.session.add(transaction)
         db.session.commit()
         return redirect(url_for("index"))
-    return render_template("pages/tables/transaction.html")
+    return render_template("addtransaction.html")
 
 @app.route('/logout')
 @login_required
